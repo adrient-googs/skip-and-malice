@@ -1,0 +1,153 @@
+<html>
+
+<head>
+
+<title>CoffeeScript Test</title>
+
+<!-- PAGE JAVASCRIPT -->
+
+<script src="libs/jquery-1.7.2.min.js"></script>
+<script src="libs/jquery-ui-1.8.21.custom.min.js"></script>
+<script src="libs/underscore-min.js"></script>
+<script src="libs/backbone-0.9.2.min.js"></script>
+
+<script type="text/javascript" src="/_ah/channel/jsapi"></script>
+<script src="js/secretary.js"></script>
+
+<!-- PAGE CSS -->
+
+<link rel="stylesheet" type="text/css" href="libs/smoothness/jquery-ui-1.8.21.custom.css"/>
+<link rel="stylesheet" type="text/css" href="css/game.css"/>
+<link rel="stylesheet" type="text/css" href="css/calEvent.css"/>
+<link rel="stylesheet" type="text/css" href="css/calendar.css"/>
+<link rel="stylesheet" type="text/css" href="css/supplicant.css"/>
+<link rel="stylesheet" type="text/css" href="css/rabble.css"/>
+<link rel="stylesheet" type="text/css" href="css/instruction.css"/>
+<link rel="stylesheet" type="text/css" href="css/guide.css"/>
+  
+</head>
+
+<body>  
+
+<!-- game area -->
+
+<div id="gameArea">
+  <div id="username" class="test-blue">
+    {{nickname}}
+  </div>
+  <div id="logout" class="test-blue">
+    (<a href="{{logout_url}}">Logout</a>)
+  </div>
+
+  <!-- covers the rest of the UI for dialogs -->
+  <div id="cover" class="test-orange"></div>
+</div>
+
+
+<!-- game element prototypes -->
+<div id="prototypes">
+  
+  <!-- doGame: wizard of oz others! -->
+  <div class="doGameView gameView">
+    <div id="buttonPanel" class="test-green">
+      <button id="addEvent">Add Event</button>
+      <button id="undo">Undo</button>
+      <button id="skip">Skip</button>
+      <button id="submit">Submit</button>
+    </div>
+  </div>
+  
+  <!-- typeGame: be wizard of oz'ed -->
+  <div class="typeGameView gameView">
+    <div id="remaining" class="test-blue">--</div>
+  </div>
+  
+  <!-- testGame: play without wizard of oz -->
+  <div class="testGameView gameView">
+    <!-- <div id="remaining" class="test-blue">--</div> -->
+    <!-- <button id="testAddCalendar">Add Calendar</button> -->
+  </div>
+  
+  <!-- testGame: play without wizard of oz -->
+  <div class="adminGameView gameView">
+    <div id="console" class="test-blue"></div>
+  </div>
+  
+  <!-- calendar: a container for calEvents -->
+  <div class="calendarView" class="test-purple"></div>
+  
+  <!-- a calendar event -->
+  <div class="calEventView test-blue">
+    <div id="data">
+      <div id="name" class="test-green">Name</div>
+      <div id="title" class="test-red">Title</div>
+      <div id="time" class="test-yellow">Time</div>
+    </div>
+    <img id="avatar" class="test-yellow">
+  </div>
+  
+  <!-- calendar event edit dialog -->
+  <div class="editCalEventView">
+    <div id="widgets">
+      <!-- <input id="name" type="text"/>
+      <input id="title" type="text"/> -->
+      <select id="name">
+        <!-- <option value="Mary">Mary</option>
+        <option value="Jane">Jane</option> -->
+      </select>
+      <div id="buttonArea" class="test-blue">
+          <button id="ok">Ok</button>
+          <button id="delete">Delete</button>
+      </div>
+    </div>
+  </div>
+  
+  
+  <!-- rabble: container for supplicants -->
+  <div class="rabbleView test-blue">
+    <div id="container" class="test-orange"></div>
+  </div>
+  
+  <!-- a supplicant -->
+  <div class="supplicantView test-purple">
+    <div id="name" class="test-green">Name</div>
+    <div id="points" class="test-blue">Points</div>
+    <div id="title" class="test-red">Title</div>
+    <div id="constraint1" class="test-yellow">Constraint 1</div>
+    <div id="constraint2" class="test-orange">Constraint 2</div>
+    <img id="avatar">
+  </div>
+  
+  <!-- guide: container for instructions -->
+  <div class="guideView">
+    <div id="instructionList" class="test-orange"></div>
+    <input id="instructionInput" type="text">
+  </div>
+  
+  <!-- an instruction -->
+  <div class="instructionView test-blue">
+    <div id="inner">
+      <div id="text" class="test-purple">instruction</div>
+      <div id="bottom" class="test-red">
+        <span id="state" class="test-purple">state</span>
+        <span id="actions" class="test-yellow">actions</span>
+      </div>
+    </div>
+  </div>
+  
+  <!-- an instruction (in do mode) -->
+  <div class="doInstructionView">
+    <div id="playerSays" class="test-green">
+      <span id="player" class="test-blue">player</span>
+      <span id="says" class="test-red">says...</span>
+    </div>
+    <div id="textContainer" class="test-orange">
+      <div id="text" class="test-purple">an instruction</div>
+    </div>
+  </div>
+</div>  
+
+
+</body>
+
+</html>

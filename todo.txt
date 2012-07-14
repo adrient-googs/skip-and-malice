@@ -1,1 +1,19 @@
-[ ] make this game fun!
+[x] basic hello world app
+[x] make a mockup
+[ ] export the game area into the game
+[ ] make board class
+[ ] create the card class
+  [ ] draggable
+  [ ] droppable?
+[ ] create the stack class
+  [ ] different kind of stacks
+[ ] game class
+  [ ] uid on the game
+  [ ] replaceable game
+[ ] communication protocol
+[ ] chat
+[ ] communication protocol for chat
+  
+-- fun stuff --
+
+[ ] put chapel thrill will on the back

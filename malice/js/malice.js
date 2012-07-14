@@ -492,7 +492,23 @@ Useful Utilities
   }).call(this, Backbone.Model);
 
   $(function() {
-    return $('body').append('hello world');
+    $('body').append('hello world');
+    return showDebugColors();
+  });
+
+  ({
+    showDebugColors: function() {
+      var color, colors, _i, _len, _results;
+      colors = ['blue', 'green', 'red', 'yellow', 'purple', 'orange'];
+      _results = [];
+      for (_i = 0, _len = colors.length; _i < _len; _i++) {
+        color = colors[_i];
+        _results.push($(".test-" + color).css({
+          backgroundColor: color
+        }));
+      }
+      return _results;
+    }
   });
 
 }).call(this);

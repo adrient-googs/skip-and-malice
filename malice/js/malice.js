@@ -6,7 +6,7 @@ Useful Utilities
 
 
 (function() {
-  var RemoteModel, chatter, openChannel, util,
+  var Board, BoardView, Pairing, PairingView, RemoteModel, chatter, openChannel, showDebugColors, util,
     __slice = [].slice,
     __indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; },
     __hasProp = {}.hasOwnProperty,
@@ -491,24 +491,113 @@ Useful Utilities
 
   }).call(this, Backbone.Model);
 
+  Board = (function(_super) {
+
+    __extends(Board, _super);
+
+    chatter.register(Board);
+
+    function Board(attribs) {
+      if (attribs == null) {
+        attribs = {};
+      }
+      Board.__super__.constructor.call(this);
+    }
+
+    Board.prototype.initialize = function(attribs) {
+      console.log("about to construct view");
+      this.view = new BoardView({
+        model: this
+      });
+      return console.log("created view");
+    };
+
+    return Board;
+
+  })(RemoteModel);
+
+  BoardView = (function(_super) {
+
+    __extends(BoardView, _super);
+
+    function BoardView(args) {
+      args.el = $('#prototypes .boardView').clone()[0];
+      BoardView.__super__.constructor.call(this, args);
+    }
+
+    BoardView.prototype.initialize = function() {
+      console.log("BoardView -- initialize");
+      console.log(this.el);
+      return console.log(this.model);
+    };
+
+    return BoardView;
+
+  })(Backbone.View);
+
   $(function() {
-    $('body').append('hello world');
-    return showDebugColors();
+    var b, p;
+    b = new Board;
+    $('#boardContainer').append(b.view.el);
+    p = new Pairing;
+    return $('#gameArea').append(p.view.el);
   });
 
-  ({
-    showDebugColors: function() {
-      var color, colors, _i, _len, _results;
-      colors = ['blue', 'green', 'red', 'yellow', 'purple', 'orange'];
-      _results = [];
-      for (_i = 0, _len = colors.length; _i < _len; _i++) {
-        color = colors[_i];
-        _results.push($(".test-" + color).css({
-          backgroundColor: color
-        }));
-      }
-      return _results;
+  showDebugColors = function() {
+    var color, colors, _i, _len, _results;
+    colors = ['blue', 'green', 'red', 'yellow', 'purple', 'orange'];
+    _results = [];
+    for (_i = 0, _len = colors.length; _i < _len; _i++) {
+      color = colors[_i];
+      _results.push($(".test-" + color).css({
+        backgroundColor: color
+      }));
     }
-  });
+    return _results;
+  };
+
+  Pairing = (function(_super) {
+
+    __extends(Pairing, _super);
+
+    chatter.register(Pairing);
+
+    function Pairing(attribs) {
+      if (attribs == null) {
+        attribs = {};
+      }
+      Pairing.__super__.constructor.call(this);
+    }
+
+    Pairing.prototype.initialize = function(attribs) {
+      console.log("about to construct view");
+      this.view = new PairingView({
+        model: this
+      });
+      return console.log("created view");
+    };
+
+    return Pairing;
+
+  })(RemoteModel);
+
+  PairingView = (function(_super) {
+
+    __extends(PairingView, _super);
+
+    function PairingView(args) {
+      args.el = $('#prototypes .pairingView').clone()[0];
+      PairingView.__super__.constructor.call(this, args);
+    }
+
+    PairingView.prototype.initialize = function() {
+      console.log("PairingView -- initialize");
+      console.log(this.el);
+      return console.log(this.model);
+    };
+
+    return PairingView;
+
+  })(Backbone.View);
 
 }).call(this);

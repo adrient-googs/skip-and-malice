@@ -1,0 +1,56 @@
+body {
+  font-family: Helvetica;
+}
+
+#header {
+  width: 100%;
+  position: absolute;
+  left: -5px;
+  top: 3px;
+  text-align: right;
+  color: rgb(150, 150, 150);
+  padding-right: 5px;
+}
+
+#header a {
+  color: rgb(150, 150, 150);
+}
+
+#gameArea {
+  width: 800px;
+  height: 700px;
+  position: absolute;
+
+  /* center it */
+  left: 50%;
+  top: 50%;
+  margin-left: -400px;
+  margin-top: -350px;
+}
+
+#boardContainer {
+  position: absolute;
+  width: 0px;
+  height: 0px;
+  left: 0px;
+  top: 0px;
+}
+
+#chatContainer {
+  position: absolute;
+  width: 0px;
+  height: 0px;
+  left: 0px;
+  top: 0px;
+}
+
+/* game element prototypes */
+#prototypes {
+  visibility: hidden;
+}
+
+
+/*  <!-- where the user plays -->
+  <div class="board"></div>
+</div>  
+*/

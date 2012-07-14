@@ -1,11 +1,16 @@
 # main function
 $ ->
-  $('body').append 'hello world'
-  showDebugColors()
+  b = new Board
+  $('#boardContainer').append b.view.el
+  
+  p = new Pairing
+  $('#gameArea').append p.view.el
+  
+  # showDebugColors()
   
 # this debug function draws a background behind every visible element
 # so that they can be laid out
-showDebugColors: ->
+showDebugColors = ->
   colors = ['blue', 'green', 'red', 'yellow', 'purple', 'orange']
   for color in colors
     $(".test-#{color}").css

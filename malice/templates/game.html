@@ -17,14 +17,21 @@
 <!-- PAGE CSS -->
 
 <link rel="stylesheet" type="text/css" href="libs/smoothness/jquery-ui-1.8.21.custom.css"/>
-<!-- <link rel="stylesheet" type="text/css" href="css/game.css"/> -->
+<link rel="stylesheet" type="text/css" href="css/game.css"/>
+<link rel="stylesheet" type="text/css" href="css/board.css"/>
+<link rel="stylesheet" type="text/css" href="css/pairing.css"/>
   
 </head>
 
 <body>  
 
+<div id="header" class="test-green">
+  {{nickname}}
+  (<a href="{{logout_url}}">Logout</a>)
+</div>
+
 <!-- contains a board a chat area -->
-<div id="gameArea">
+<div id="gameArea" class="test-blue">
   <div id="boardContainer"></div>
   <div id="chatContainer"></div>
 </div>
@@ -33,7 +40,12 @@
 <!-- game element prototypes -->
 <div id="prototypes">
   <!-- where the user plays -->
-  <div class="board"></div>
+  <div class="boardView"></div>
+  
+  <!-- information about the pairing -->
+  <div class="pairingView">
+    
+  </div>
 </div>  
 
 

@@ -497,19 +497,39 @@ Useful Utilities
 
     chatter.register(Board);
 
+    Board.STACKS = ['build1', 'build2', 'build3', 'build4'];
+
     function Board(attribs) {
+      var stack, _i, _len, _ref;
       if (attribs == null) {
         attribs = {};
       }
-      Board.__super__.constructor.call(this);
+      _ref = Board.STACKS;
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        stack = _ref[_i];
+        if (__indexOf.call(attribs, stack) < 0) {
+          attribs[stack] = new Stack({
+            type: stack
+          });
+        }
+      }
+      console.log('CREATED A STACK');
+      console.log(attribs.build1);
+      Board.__super__.constructor.call(this, attribs);
     }
 
     Board.prototype.initialize = function(attribs) {
-      console.log("about to construct view");
-      this.view = new BoardView({
+      var stack, _i, _len, _ref;
+      console.log("CHECKING STACKS");
+      _ref = Board.STACKS;
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        stack = _ref[_i];
+        console.log(stack);
+        console.log(this.get(stack));
+      }
+      return this.view = new BoardView({
         model: this
       });
-      return console.log("created view");
     };
 
     return Board;
@@ -526,9 +546,20 @@ Useful Utilities
     }
 
     BoardView.prototype.initialize = function() {
+      var stack, stack_container, _i, _len, _ref, _results;
       console.log("BoardView -- initialize");
       console.log(this.el);
-      return console.log(this.model);
+      console.log(this.model);
+      stack_container = this.$el.find('#stackContainer');
+      _ref = Board.STACKS;
+      _results = [];
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        stack = _ref[_i];
+        console.log("about to append stack");
+        console.log(this.model.get(stack));
+        _results.push(stack_container.append(this.model.get(stack).view.el));
+      }
+      return _results;
     };
 
     return BoardView;
@@ -644,16 +675,18 @@ Useful Utilities
 
     CardView.prototype.onDragStart = function(card) {
       util.assertion(card.cid === this.model.cid, "Drag CID mismatch: " + card.cid + " != " + this.model.cid + ".");
-      return this.$el.css({
+      this.$el.css({
         zIndex: 3000
       });
+      return console.log("onDragStart");
     };
 
     CardView.prototype.onDragStop = function(card) {
       util.assertion(card.cid === this.model.cid, "Drag CID mismatch: " + card.cid + " != " + this.model.cid + ".");
-      return this.$el.css({
+      this.$el.css({
         zIndex: ''
       });
+      return console.log("onDragStop");
     };
 
     return CardView;
@@ -661,7 +694,7 @@ Useful Utilities
   })(Backbone.View);
 
   $(function() {
-    var b, c, p, s;
+    var b, c, p;
     b = new Board;
     $('#boardContainer').append(b.view.el);
     p = new Pairing;
@@ -670,12 +703,7 @@ Useful Utilities
       suit: 'S',
       number: 1
     });
-    b.view.$el.append(c.view.el);
-    s = new Stack;
-    b.view.$el.append(s.view.el);
-    c.view.on('drag:start', StackView.prototype.onDragStart, s.view);
-    c.view.on('drag:stop', StackView.prototype.onDragStop, s.view);
-    return showDebugColors();
+    return b.view.$el.append(c.view.el);
   });
 
   showDebugColors = function() {
@@ -742,14 +770,15 @@ Useful Utilities
     chatter.register(Stack);
 
     function Stack(attribs) {
-      if (attribs == null) {
-        attribs = {};
-      }
+      console.log('consructing staCKCKCKC');
+      console.log(attribs);
       Stack.__super__.constructor.call(this, attribs);
     }
 
     Stack.prototype.initialize = function(attribs) {
       var _ref;
+      console.log("Stack initialize " + (this.get('type')) + ", attributes...");
+      console.log(attribs);
       util.setCollectionAsAttribute(this, 'calEvents', (_ref = attribs.calEvents) != null ? _ref : []);
       this.calEvents.comparator = function(event) {
         return event.get('name');
@@ -777,22 +806,70 @@ Useful Utilities
     }
 
     StackView.prototype.initialize = function() {
-      return this.card_drop = this.$el.find('#cardDrop');
-    };
-
-    StackView.prototype.onDragStart = function(card) {
-      if (this.model.accepts(card)) {
-        console.log("stack accepts card");
-        return this.card_drop.css({
-          visibility: 'visible',
-          pointerEvents: 'auto'
-        });
-      } else {
-        return console.log("stack does not accept card");
+      var _this = this;
+      switch (this.model.get('type')) {
+        case 'build1':
+          this.$el.css({
+            left: 263,
+            top: 301
+          });
+          break;
+        case 'build2':
+          this.$el.css({
+            left: 346,
+            top: 301
+          });
+          break;
+        case 'build3':
+          this.$el.css({
+            left: 430,
+            top: 301
+          });
+          break;
+        case 'build4':
+          this.$el.css({
+            left: 514,
+            top: 301
+          });
       }
+      this.$el.attr({
+        id: this.model.get('type')
+      });
+      this.card_drop = this.$el.find('#cardDrop');
+      return this.card_drop.droppable({
+        activeClass: 'card-drop-active',
+        addClasses: false,
+        greedy: true,
+        hoverClass: 'card-drop-hover',
+        tolerance: 'intersect',
+        activate: function() {
+          return _this.onDropActivate();
+        },
+        deactivate: function() {
+          return _this.onDropDeactivate();
+        },
+        over: function() {
+          return console.log("droppable - over");
+        },
+        out: function() {
+          return console.log("droppable - out");
+        },
+        drop: function() {
+          return console.log("droppable - drop: " + (_this.model.get('type')));
+        }
+      });
     };
 
-    StackView.prototype.onDragStop = function(card) {
+    StackView.prototype.onDropActivate = function() {
+      console.log("onDropActivate");
+      return this.card_drop.css({
+        visibility: 'visible',
+        pointerEvents: 'auto'
+      });
+    };
+
+    StackView.prototype.onDropDeactivate = function() {
+      console.log("onDropDeactivate");
       return this.card_drop.css({
         visibility: 'hidden',
         pointerEvents: 'none'

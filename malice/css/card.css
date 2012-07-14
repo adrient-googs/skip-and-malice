@@ -1,0 +1,8 @@
+.cardView {
+  width: 67px;
+  height: 93px;
+  position: absolute;
+  left: 100px;
+  top: 100px;
+  background-size: 100% 100%;
+}

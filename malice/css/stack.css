@@ -1,0 +1,22 @@
+.stackView {
+  width: 67px;
+  height: 93px;
+  position: absolute;
+}
+
+.stackView #cardDrop {
+  /* as big as a card (67x93) but with extra 9 pixels on all sides */
+  width: 85px;
+  height: 111px;
+  margin-left: -9px;
+  margin-top: -9px;
+  
+  position: absolute;  
+  left: 0px;
+  top: 0px;
+  
+  background-image: url('/imgs/cardDrop.png?v2');
+  
+  visibility: hidden;
+  pointer-events: none;
+}

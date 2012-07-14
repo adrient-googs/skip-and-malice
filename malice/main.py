@@ -9,7 +9,7 @@ import logging
 # include this project's python libraries
 sys.path.append(os.path.join(os.path.dirname(__file__), 'python'))
 import chatter
-import secretary
+import malice
 
 class MainPage(webapp2.RequestHandler):
   """The principal interface through which the player accesses the game."""

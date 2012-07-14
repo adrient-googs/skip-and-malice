@@ -18,6 +18,8 @@
 
 <link rel="stylesheet" type="text/css" href="libs/smoothness/jquery-ui-1.8.21.custom.css"/>
 <link rel="stylesheet" type="text/css" href="css/game.css"/>
+<link rel="stylesheet" type="text/css" href="css/card.css"/>
+<link rel="stylesheet" type="text/css" href="css/stack.css"/>
 <link rel="stylesheet" type="text/css" href="css/board.css"/>
 <link rel="stylesheet" type="text/css" href="css/pairing.css"/>
   
@@ -39,12 +41,24 @@
 
 <!-- game element prototypes -->
 <div id="prototypes">
+  <!-- a card -->
+  <div class="cardView test-blue"></div>
+  
+  <!-- a card -->
+  <div class="stackView">
+    <!-- where a card can be dropped -->
+    <div id="cardDrop"></div>
+  </div>
+  
   <!-- where the user plays -->
   <div class="boardView"></div>
   
   <!-- information about the pairing -->
-  <div class="pairingView">
-    
+  <div class="pairingView test-orange">
+    <div id="name1" class="name test-red">Mamoushka</div>
+    <div id="name2" class="name test-green">name2</div>
+    <div id="won1" class="won test-blue">1</div>
+    <div id="won2" class="won test-purple">2</div>
   </div>
 </div>  
 

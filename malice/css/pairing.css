@@ -1,7 +1,39 @@
-.pairView {
+.pairingView {
   position:absolute;
   left: 0px;
   top: 0px;
-  width: 0px;
-  height: 0px;
+}
+
+.pairingView div {
+  position: absolute;
+}
+
+.pairingView .name {
+  text-align: center;
+  width: 210px;
+  font-weight: bold;
+  font-size: 30px;
+  left: 30px;
+}
+
+.pairingView #name1 {
+  top: 536px;
+}
+
+.pairingView #name2 {
+  top: 138px;
+}
+
+.pairingView .won {
+  font-size: 19px;
+  font-weight: bold;
+  left: 183px;
+}
+
+.pairingView #won1 {
+  top: 578px;
+}
+
+.pairingView #won2 {
+  top: 107px;
 }

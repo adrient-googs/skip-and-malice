@@ -6,7 +6,7 @@ Useful Utilities
 
 
 (function() {
-  var Board, BoardView, Pairing, PairingView, RemoteModel, chatter, openChannel, showDebugColors, util,
+  var Board, BoardView, Card, CardView, Pairing, PairingView, RemoteModel, Stack, StackView, chatter, openChannel, showDebugColors, util,
     __slice = [].slice,
     __indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; },
     __hasProp = {}.hasOwnProperty,
@@ -535,12 +535,147 @@ Useful Utilities
 
   })(Backbone.View);
 
+  Card = (function(_super) {
+
+    __extends(Card, _super);
+
+    chatter.register(Card);
+
+    Card.prototype.defaults = {
+      facing: 'front'
+    };
+
+    Card.SUITS = ['S', 'H', 'D', 'C'];
+
+    Card.NUMBERS = {
+      1: 'A',
+      2: '2',
+      3: '3',
+      4: '4',
+      5: '5',
+      6: '6',
+      7: '7',
+      8: '8',
+      9: '9',
+      10: '10',
+      11: 'J',
+      12: 'Q',
+      13: 'K'
+    };
+
+    function Card(attribs) {
+      var _ref, _ref1;
+      if (attribs == null) {
+        attribs = {};
+      }
+      util.assertion((_ref = attribs != null ? attribs.suit : void 0, __indexOf.call(Card.SUITS, _ref) >= 0), "Incorrect suit: " + attribs.suit + ".");
+      util.assertion((_ref1 = "" + (attribs != null ? attribs.number : void 0), __indexOf.call(_.keys(Card.NUMBERS), _ref1) >= 0), "Incorrect number: " + attribs.number + ".");
+      Card.__super__.constructor.call(this, attribs);
+    }
+
+    Card.prototype.initialize = function(attribs) {
+      console.log("creating new card");
+      console.log(this.attributes);
+      console.log("about to construct view");
+      this.view = new CardView({
+        model: this
+      });
+      return console.log("created view");
+    };
+
+    Card.prototype.validate = function(attribs) {
+      if (__indexOf.call(attribs, 'suit') >= 0 || __indexOf.call(attribs, 'number') >= 0) {
+        return 'Cards are immutable.';
+      }
+      if (__indexOf.call(attribs, 'facing') >= 0) {
+        throw new Error('user changing which way the card is facing');
+      }
+    };
+
+    return Card;
+
+  })(RemoteModel);
+
+  CardView = (function(_super) {
+
+    __extends(CardView, _super);
+
+    function CardView(args) {
+      args.el = $('#prototypes .cardView').clone()[0];
+      CardView.__super__.constructor.call(this, args);
+    }
+
+    CardView.prototype.initialize = function() {
+      var _this = this;
+      this.$el.draggable({
+        containment: 'parent',
+        start: function() {
+          return _this.trigger('drag:start', _this.model);
+        },
+        drag: function() {
+          return _this.trigger('drag:dragging', _this.model);
+        },
+        stop: function() {
+          return _this.trigger('drag:stop', _this.model);
+        }
+      });
+      this.on('drag:start', CardView.prototype.onDragStart, this);
+      this.on('drag:stop', CardView.prototype.onDragStop, this);
+      return this.render();
+    };
+
+    CardView.prototype.render = function() {
+      var number_str, suit_str;
+      return this.$el.css({
+        backgroundImage: (function() {
+          switch (this.model.get('facing')) {
+            case 'front':
+              number_str = Card.NUMBERS["" + (this.model.get('number'))];
+              suit_str = this.model.get('suit');
+              return "url('/imgs/cards/" + number_str + suit_str + ".png')";
+            case 'back':
+              return "url('/imgs/cards/back.png')";
+            default:
+              throw new Error('Card not facing properly.');
+          }
+        }).call(this)
+      });
+    };
+
+    CardView.prototype.onDragStart = function(card) {
+      util.assertion(card.cid === this.model.cid, "Drag CID mismatch: " + card.cid + " != " + this.model.cid + ".");
+      return this.$el.css({
+        zIndex: 3000
+      });
+    };
+
+    CardView.prototype.onDragStop = function(card) {
+      util.assertion(card.cid === this.model.cid, "Drag CID mismatch: " + card.cid + " != " + this.model.cid + ".");
+      return this.$el.css({
+        zIndex: ''
+      });
+    };
+
+    return CardView;
+
+  })(Backbone.View);
+
   $(function() {
-    var b, p;
+    var b, c, p, s;
     b = new Board;
     $('#boardContainer').append(b.view.el);
     p = new Pairing;
-    return $('#gameArea').append(p.view.el);
+    $('#gameArea').append(p.view.el);
+    c = new Card({
+      suit: 'S',
+      number: 1
+    });
+    b.view.$el.append(c.view.el);
+    s = new Stack;
+    b.view.$el.append(s.view.el);
+    c.view.on('drag:start', StackView.prototype.onDragStart, s.view);
+    c.view.on('drag:stop', StackView.prototype.onDragStop, s.view);
+    return showDebugColors();
   });
 
   showDebugColors = function() {
@@ -597,6 +732,74 @@ Useful Utilities
     };
 
     return PairingView;
+
+  })(Backbone.View);
+
+  Stack = (function(_super) {
+
+    __extends(Stack, _super);
+
+    chatter.register(Stack);
+
+    function Stack(attribs) {
+      if (attribs == null) {
+        attribs = {};
+      }
+      Stack.__super__.constructor.call(this, attribs);
+    }
+
+    Stack.prototype.initialize = function(attribs) {
+      var _ref;
+      util.setCollectionAsAttribute(this, 'calEvents', (_ref = attribs.calEvents) != null ? _ref : []);
+      this.calEvents.comparator = function(event) {
+        return event.get('name');
+      };
+      return this.view = new StackView({
+        model: this
+      });
+    };
+
+    Stack.prototype.accepts = function(card) {
+      return true;
+    };
+
+    return Stack;
+
+  })(RemoteModel);
+
+  StackView = (function(_super) {
+
+    __extends(StackView, _super);
+
+    function StackView(args) {
+      args.el = $('#prototypes .stackView').clone()[0];
+      StackView.__super__.constructor.call(this, args);
+    }
+
+    StackView.prototype.initialize = function() {
+      return this.card_drop = this.$el.find('#cardDrop');
+    };
+
+    StackView.prototype.onDragStart = function(card) {
+      if (this.model.accepts(card)) {
+        console.log("stack accepts card");
+        return this.card_drop.css({
+          visibility: 'visible',
+          pointerEvents: 'auto'
+        });
+      } else {
+        return console.log("stack does not accept card");
+      }
+    };
+
+    StackView.prototype.onDragStop = function(card) {
+      return this.card_drop.css({
+        visibility: 'hidden',
+        pointerEvents: 'none'
+      });
+    };
+
+    return StackView;
 
   })(Backbone.View);
 

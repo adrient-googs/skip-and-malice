@@ -1,11 +1,12 @@
 [x] basic hello world app
 [x] make a mockup
-[ ] export the game area into the game
-[ ] make board class
-[ ] create the card class
-  [ ] draggable
-  [ ] droppable?
+[x] export the game area into the game
+[x] make board class
+[x] create the card class
+  [x] draggable
+  
 [ ] create the stack class
+  [ ] make the card droppable
   [ ] different kind of stacks
 [ ] game class
   [ ] uid on the game

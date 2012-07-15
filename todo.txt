@@ -7,6 +7,9 @@
   
 [ ] create the stack class
   [ ] make the card droppable
+  [ ] by default the card is in a particular stack
+    [ ] dropping changes what stack it's in
+    [ ] animate the stack change
   [ ] different kind of stacks
 [ ] game class
   [ ] uid on the game

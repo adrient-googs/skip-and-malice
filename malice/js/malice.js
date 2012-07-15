@@ -770,6 +770,22 @@ Useful Utilities
     chatter.register(Stack);
 
     function Stack(attribs) {
+      switch (attribs.type) {
+        case 'build1':
+          void 0;
+          break;
+        case 'build2':
+          void 0;
+          break;
+        case 'build3':
+          void 0;
+          break;
+        case 'build4':
+          void 0;
+          break;
+        default:
+          throw new Error("Stack type " + (this.model.get('type')) + " invalid.");
+      }
       console.log('consructing staCKCKCKC');
       console.log(attribs);
       Stack.__super__.constructor.call(this, attribs);
@@ -831,6 +847,9 @@ Useful Utilities
             left: 514,
             top: 301
           });
+          break;
+        default:
+          throw new Error("Stack type " + (this.model.get('type')) + " invalid.");
       }
       this.$el.attr({
         id: this.model.get('type')
@@ -838,6 +857,7 @@ Useful Utilities
       this.card_drop = this.$el.find('#cardDrop');
       return this.card_drop.droppable({
         activeClass: 'card-drop-active',
+        accept: '.cardView',
         addClasses: false,
         greedy: true,
         hoverClass: 'card-drop-hover',

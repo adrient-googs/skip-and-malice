@@ -12,7 +12,14 @@ class Stack extends RemoteModel
 
   # constructor
   constructor: (attribs) ->
-    # set attributes based on id
+    # set attributes based on stack type
+    switch attribs.type
+      when 'build1' then undefined
+      when 'build2' then undefined
+      when 'build3' then undefined
+      when 'build4' then undefined
+      else throw new Error "Stack type #{@model.get('type')} invalid."
+    
     # switch attribs.id
     #   when 'build1'
     #     attribs.left = '300'
@@ -74,6 +81,7 @@ class StackView extends Backbone.View
       when 'build2' then @$el.css left: 346, top: 301
       when 'build3' then @$el.css left: 430, top: 301
       when 'build4' then @$el.css left: 514, top: 301
+      else throw new Error "Stack type #{@model.get('type')} invalid."
     @$el.attr id: @model.get('type')
     
     # set up the card drop
@@ -81,7 +89,7 @@ class StackView extends Backbone.View
     @card_drop.droppable
       # disabled: true
       activeClass: 'card-drop-active'
-      # accept: '.cardView'
+      accept: '.cardView'
       addClasses: false
       greedy: true
       hoverClass: 'card-drop-hover'
